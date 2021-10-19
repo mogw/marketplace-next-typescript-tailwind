@@ -1,15 +1,27 @@
-import Link from 'next/link'
+import { GetStaticProps } from 'next'
+import CardComponent from '../components/CardComponent'
+import { sampleCardsData } from '../utils/sample-card'
+import { Card } from '../interfaces'
 import Layout from '../components/Layout'
 
-const IndexPage = () => (
-  <Layout title="Home | Next.js + TypeScript Example">
-    <h1>Hello Next.js 👋</h1>
-    <p>
-      <Link href="/about">
-        <a>About</a>
-      </Link>
-    </p>
+type Props = {
+  items: Card[]
+}
+
+const ShowCardsList = ({ items }: Props) => (
+  <Layout title='Live Auctions'>
+    <div className="grid grid-cols-1 md:grid-cols-4">
+      {items.map(item => (
+        <CardComponent item={item} key={item.id} />
+      ))}
+    </div>
   </Layout>
 )
 
-export default IndexPage
+export const getStaticProps: GetStaticProps = async () => {
+  /* Init props. */
+  const items: Card[] = sampleCardsData
+  return { props: { items } }
+}
+
+export default ShowCardsList
